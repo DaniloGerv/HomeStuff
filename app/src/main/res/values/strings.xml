@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">HomeStuff</string>
+    <string name="facebook_application_id">264238844587426</string> <string name="facebook_login_protocol_scheme">fb264238844587426</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="nome">Nome</string>
+    <string name="cognome">Cognome</string>
+    <string name="login">Accedi</string>
+    <string name="register">Registrati</string>
+    <string name="errorSignIn">Si è verificato un errore durante l'autenticazione</string>
+    <string name="errorSignUp">Si è verificato un errore durante la registrazione</string>
+    <string name="infoRequiredRegister">Si necessitano tutte le informazioni</string>
+    <string name="errorEmailRegister">Email inserita già utilizzata per un altro account</string>
+    <string name="ok">Ok</string>
+    <string name="sorgenteImmagineProfilo">Selezionare immagine sorgente</string>
+    <string name="dettagliProfilo">Dettagli profilo</string>
+    <string name="home">Home</string>
+    <string name="profilo">Profilo</string>
+    <string name="benvenutoTitle">Benvenuto</string>
+    <string name="profiloTitle">Modifica profilo</string>
+    <string name="localizza">Clicca per localizzare</string>
+</resources>

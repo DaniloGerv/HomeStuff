@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1056735418227",
+    "firebase_url": "https://homestuff-a8614.firebaseio.com",
+    "project_id": "homestuff-a8614",
+    "storage_bucket": "homestuff-a8614.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1056735418227:android:e8d3d4b7dd6a3a19ac1706",
+        "android_client_info": {
+          "package_name": "com.univpm.homestuff"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1056735418227-m8ht44ubviivg4ugs0lbvp9c8oi5e3pt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCa56TJkrRLRhlT3DWRmMInFLCnGtt1Wes"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1056735418227-m8ht44ubviivg4ugs0lbvp9c8oi5e3pt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
