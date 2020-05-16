@@ -8,10 +8,9 @@ public class User {
     private String lastName;
     private String email;
     private String password;
-    private String city;
-    private String address;
-    private String CAP;
     private String uid;
+    private Location place;
+    private String photoURL;
 
     public User(String firstName,String lastName,String email,String password){
         this.firstName=firstName;
@@ -23,6 +22,15 @@ public class User {
     public User(String email)
     {
         this.email=email;
+    }
+
+    public User(String firstName,String lastName,String email,String password,double latitude,double longitude,String address,String city,String state,String country,String postalCode,String name)
+    {
+        this.firstName=firstName;
+        this.lastName=lastName;
+        this.email=email;
+        this.password=password;
+        this.place=new Location(latitude,longitude,address,city,state,country,postalCode,name);
     }
 
     public User()
@@ -55,10 +63,7 @@ public class User {
     public String getPassword(){
         return this.password;
     }
-    public void setPassword(String val)
-    {
-        this.password=val;
-    }
+    public void setPassword(String val){ this.password=val; }
 
     public String getUID(){
         return this.uid;
@@ -68,17 +73,16 @@ public class User {
         this.uid=val;
     }
 
-    public void setCity(String val)
-    {
-        this.city=val;
-    }
+    public Location getPlace() {return this.place;}
+    public void setPlace(Location val){this.place=val;}
 
-    public void setAddress(String val)
-    {
-        this.address=val;
+    public String getPhotoURL(){
+        return this.photoURL;
     }
-
-    public void setCAP(String val){ this.CAP=val; }
+    public void setPhotoURL(String val)
+    {
+        this.photoURL=val;
+    }
 
 
 

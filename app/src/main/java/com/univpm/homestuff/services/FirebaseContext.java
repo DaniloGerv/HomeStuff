@@ -1,5 +1,7 @@
 package com.univpm.homestuff.services;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -20,6 +22,8 @@ public class FirebaseContext {
     {
         context = FirebaseFirestore.getInstance();
     }
+
+
 
     public void readData(String collectionName, final DataCallBack myCallBack)
     {

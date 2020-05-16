@@ -6,5 +6,6 @@ import com.univpm.homestuff.callbacks.ResponseCallBack;
 public interface IRepository<T> {
     public void getData(final RepositoryCallBack<T> myCallBack);
     public void addData(T data, final ResponseCallBack myCallBack);
+    public void getSingleData(String id,final RepositoryCallBack<T> myCallBack);
 
 }

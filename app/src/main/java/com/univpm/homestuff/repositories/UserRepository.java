@@ -1,9 +1,15 @@
 package com.univpm.homestuff.repositories;
 
+import android.net.Uri;
+import android.util.Log;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.univpm.homestuff.callbacks.DataCallBack;
 import com.univpm.homestuff.callbacks.RepositoryCallBack;
 import com.univpm.homestuff.callbacks.ResponseCallBack;
+import com.univpm.homestuff.entities.Location;
 import com.univpm.homestuff.entities.User;
 import com.univpm.homestuff.interfaces.IRepository;
 import com.univpm.homestuff.services.FirebaseContext;
@@ -44,6 +50,45 @@ public class UserRepository implements IRepository<User> {
                 myCallBack.onCallback(value);
             }
         });
+    }
+
+    @Override
+    public void getSingleData(final String uid,final RepositoryCallBack<User> myCallBack) {
+        dbContext.readData(collection , new DataCallBack() {
+            @Override
+            public void onCallback(List<DocumentSnapshot> value) {
+                User u=null;
+                for (DocumentSnapshot document :value) {
+                    if (uid.equals(document.getId())) {
+                        u = document.toObject(User.class);
+                        u.setUID(document.getId());
+                    }
+                }
+                ArrayList<User> toShare=new ArrayList<User>();
+                toShare.add(u);
+                myCallBack.onCallback(toShare);
+            }
+        });
+    }
+
+    public void updateProfilePhotoURL(User u)
+    {
+        UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
+                .setPhotoUri(Uri.parse(u.getPhotoURL()))
+                .build();
+        FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileChangeRequest);
+        this.addData(u, new ResponseCallBack() {
+            @Override
+            public void onCallback(boolean value) {
+                if (!value) { //error
+                }
+            }
+        });
+    }
+
+    public void updateProfile(User u)
+    {
+
     }
 
 }

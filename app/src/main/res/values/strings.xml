@@ -7,7 +7,7 @@
     <string name="cognome">Cognome</string>
     <string name="login">Accedi</string>
     <string name="register">Registrati</string>
-    <string name="errorSignIn">Si è verificato un errore durante l'autenticazione</string>
+    <string name="errorSignIn">Si è verificato un errore durante la fase di autenticazione</string>
     <string name="errorSignUp">Si è verificato un errore durante la registrazione</string>
     <string name="infoRequiredRegister">Si necessitano tutte le informazioni</string>
     <string name="errorEmailRegister">Email inserita già utilizzata per un altro account</string>
@@ -19,4 +19,6 @@
     <string name="benvenutoTitle">Benvenuto</string>
     <string name="profiloTitle">Modifica profilo</string>
     <string name="localizza">Clicca per localizzare</string>
+    <string name="geoOk">Localizzazzione effettuata correttamente</string>
+    <string name="geoError">Non è stato possibile memorizzare i dati relativi alla geolocalizzazione</string>
 </resources>

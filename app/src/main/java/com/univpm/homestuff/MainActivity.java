@@ -30,10 +30,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
+        FirebaseAuth.getInstance().signOut();
         setContentView(R.layout.activity_main);
         userAlreadyOnDb=false;
-        FirebaseAuth.getInstance().signOut();
         user = FirebaseAuth.getInstance().getCurrentUser();
         context = FirebaseFirestore.getInstance();
 

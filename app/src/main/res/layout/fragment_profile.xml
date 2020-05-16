@@ -82,7 +82,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/text_nome_profile"
+                    android:id="@+id/text_firstName_profile"
                     android:inputType="text"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -94,7 +94,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/text_cognome_profile"
+                    android:id="@+id/text_lastName_profile"
                     android:inputType="text"/>
             </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
@@ -116,7 +116,8 @@
                 android:layout_marginTop="50dp"
                 android:layout_marginLeft="25dp"
                 android:textSize="20dp"
-                android:hint="@string/localizza" />
+                android:hint="@string/localizza"
+                android:id="@+id/text_geo"/>
 
             <ImageButton
             android:layout_width="60dp"
@@ -124,8 +125,7 @@
             android:background="@android:color/white"
             android:layout_marginLeft="15dp"
             android:layout_height="60dp"
-                android:id="@+id/img_location"
-            android:src="@drawable/ic_cancel_black_24dp"/>
+                android:id="@+id/img_location"/>
 
         </LinearLayout>
 

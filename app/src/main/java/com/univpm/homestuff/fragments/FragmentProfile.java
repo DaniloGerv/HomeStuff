@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -15,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,27 +32,40 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthSettings;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.univpm.homestuff.R;
+import com.univpm.homestuff.callbacks.LocationCallBack;
+import com.univpm.homestuff.callbacks.RepositoryCallBack;
+import com.univpm.homestuff.callbacks.ResponseCallBack;
+import com.univpm.homestuff.entities.User;
+import com.univpm.homestuff.repositories.UserRepository;
+import com.univpm.homestuff.services.Geolocation;
 import com.univpm.homestuff.utilities.Codes;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
-public class FragmentProfile extends Fragment {
+public class FragmentProfile extends Fragment implements View.OnClickListener {
 
+    private Geolocation geoService;
 
-    private FirebaseUser currentUser;
+    private UserRepository userRepository;
+    private User user;
 
     private StorageReference storage,childStorage;
+    private FirebaseUser currentUser;
+
     private ImageView proPic;
-    private TextView textEmail,textNome,textCognome;
+    private ImageButton geoButton;
+    private TextView textEmail,textFirstName,textLastName,textGeo;
 
     private ArrayList<String> permissionsToRequest;
     private ArrayList<String> permissionsRejected = new ArrayList<>();
@@ -65,30 +81,89 @@ public class FragmentProfile extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view=inflater.inflate(R.layout.fragment_profile,container,false);
-         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-         storage = FirebaseStorage.getInstance().getReference();
-         childStorage = storage.child("profileImages/"+currentUser.getUid()+".png");
+        userRepository=new UserRepository();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        //Getting user data from data base
+        userRepository.getSingleData(currentUser.getUid(), new RepositoryCallBack<User>() {
+             @Override
+             public void onCallback(ArrayList<User> value) {
+                 if (value.size()>0) {
+                     user = value.get(0);
+                     storage = FirebaseStorage.getInstance().getReference();
+                     childStorage = storage.child("profileImages/"+user.getUID()+".png");
+
+                     textEmail.setText(user.getEmail());
+                     textFirstName.setText(user.getFirstName());
+                     textLastName.setText(user.getLastName());
+                     if (user.getPlace()!=null)
+                     {
+                         geoButton.setBackgroundResource(R.drawable.ic_done_black_24dp);
+                     }else
+                     {
+                         geoButton.setBackgroundResource(R.drawable.ic_cancel_black_24dp);
+                     }
+
+
+                     //loading the profile image
+                     if(user.getPhotoURL() != null ) {
+                         try {
+                             File proImage = File.createTempFile(user.getUID(), ".png");
+                             if (!proImage.exists()) //Image is not into the device, it is needded to download it from the storage
+                             {
+                                 final File localFile = File.createTempFile(user.getUID(), ".png");
+                                 childStorage.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                     @Override
+                                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                         Bitmap my_image;
+                                         my_image = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                                         Glide.with(FragmentProfile.this)
+                                                 .load(my_image)
+                                                 .centerCrop()
+                                                 .into(proPic);
+                                         user.setPhotoURL(localFile.toURI().toString());
+                                         userRepository.updateProfilePhotoURL(user);
+                                     }
+                                 }).addOnFailureListener(new OnFailureListener() {
+                                     @Override
+                                     public void onFailure(@NonNull Exception e) {
+                                         Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                     }
+                                 });
+
+                             } else //The image is already on the device, it is not necessary to download it
+                             {
+                                 Glide.with(FragmentProfile.this)
+                                         .load(user.getPhotoURL())
+                                         .centerCrop()
+                                         .into(proPic);
+                             }
+
+                         }catch (Exception e) {
+                         }
+                     }
+                     else {//loading default profile image
+                         loadDefaultImage();
+                     }
+                 }
+                 else
+                 {
+                     Log.d("FUORI","AAA");
+                     //no user
+                 }
+             }
+         });
 
         // getActivity()..setTitle(R.string.profiloTitle);
-
         proPic = view.findViewById(R.id.propic);
-        textEmail = view.findViewById(R.id.text_email_profile);
-        textNome=view.findViewById(R.id.text_nome_profile);
-        textCognome=view.findViewById(R.id.text_cognome_profile);
         proPic.setClipToOutline(true);
+        geoButton=view.findViewById(R.id.img_location);
+        textEmail = view.findViewById(R.id.text_email_profile);
+        textFirstName=view.findViewById(R.id.text_firstName_profile);
+        textGeo=view.findViewById(R.id.text_geo);
+        textGeo.setOnClickListener(this);
+        textLastName=view.findViewById(R.id.text_lastName_profile);
 
-        textEmail.setText(currentUser.getEmail());
-
-        //loading the profile image
-        if(currentUser.getPhotoUrl() != null) {
-                    Glide.with(FragmentProfile.this)
-                            .load(currentUser.getPhotoUrl())
-                            .centerCrop()
-                            .into(proPic);
-        }
-        else {
-           loadDefaultImage();
-        }
 
         proPic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,6 +182,33 @@ public class FragmentProfile extends Fragment {
         return view;
     }
 
+   @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.text_geo:
+                geoService=new Geolocation(getActivity());
+                geoService.getLastLocation(getActivity(), new LocationCallBack() {
+                    @Override
+                    public void onCallbackLocation(Location l) {
+                            user.setPlace(new com.univpm.homestuff.entities.Location(l.getLatitude(),l.getLongitude(),getActivity()));
+                            userRepository.addData(user, new ResponseCallBack() {
+                                @Override
+                                public void onCallback(boolean value) {
+                                    if (value) {
+                                        Toast.makeText(getContext(), R.string.geoOk, Toast.LENGTH_SHORT).show();
+                                        geoButton.setBackgroundResource(R.drawable.ic_done_black_24dp);
+                                    } else {
+                                        Toast.makeText(getContext(), R.string.geoError, Toast.LENGTH_SHORT).show();
+                                        geoButton.setBackgroundResource(R.drawable.ic_cancel_black_24dp);
+                                    }
+                                }
+                            });
+                    }
+                });
+                break;
+        }
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -114,18 +216,16 @@ public class FragmentProfile extends Fragment {
             Bitmap bitmap = null;
             if(resultCode == RESULT_OK) {
                 if(getPickImageResultUri(intent) != null) {
-                    Uri picUri = getPickImageResultUri(intent);
+                   final Uri picUri = getPickImageResultUri(intent);
                     try {
                         bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), picUri);
                         Glide.with(this)
                                 .load(bitmap)
                                 .centerCrop()
                                 .into(proPic);
-                        UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
-                                .setPhotoUri(picUri)
-                                .build();
-                        currentUser.updateProfile(profileChangeRequest);
-                        childStorage.delete(); //Deleting the old image
+
+                       childStorage.delete(); //Deleting the old image
+                        user.setPhotoURL(picUri.toString());
                         //Loading into the storage the new profile image
                         childStorage.putFile(picUri).addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -135,7 +235,7 @@ public class FragmentProfile extends Fragment {
                         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                Log.d("UPLOAD","OK");
+                                userRepository.updateProfilePhotoURL(user);
                             }
                         });
                     } catch(IOException e) {
@@ -148,11 +248,11 @@ public class FragmentProfile extends Fragment {
             }else
             {
              //When the user leaves from the selection of the image
-                if(currentUser.getPhotoUrl() != null) {
-                    Glide.with(this)
-                            .load(childStorage)
-                            .centerCrop()
-                            .into(proPic);
+                if(user.getPhotoURL() != null) {
+                        Glide.with(FragmentProfile.this)
+                                .load(user.getPhotoURL())
+                                .centerCrop()
+                                .into(proPic);
                 }
                 else {
                     loadDefaultImage();
@@ -160,6 +260,8 @@ public class FragmentProfile extends Fragment {
             }
         }
     }
+
+
 
     private void loadDefaultImage()
     {
