@@ -32,12 +32,12 @@ public class Location {
         try {
             addresses = geocoder.getFromLocation(this.latitude, this.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
 
-            this.address= addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+            this.address= addresses.get(0).getThoroughfare()+" "+addresses.get(0).getFeatureName(); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
             this.city = addresses.get(0).getLocality();
             this.state = addresses.get(0).getAdminArea();
             this.country = addresses.get(0).getCountryName();
             this.postalCode = addresses.get(0).getPostalCode();
-            this.name = addresses.get(0).getFeatureName();
+            this.name = addresses.get(0).getAddressLine(0);
 
         }catch (IOException ex)
         {

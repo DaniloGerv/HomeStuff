@@ -7,4 +7,5 @@ public class Utility {
         String result[]=s.split(" ");
         return result;
     }
+
 }

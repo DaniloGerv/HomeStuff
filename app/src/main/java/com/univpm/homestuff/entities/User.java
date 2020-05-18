@@ -1,6 +1,6 @@
 package com.univpm.homestuff.entities;
 
-import java.util.Set;
+
 
 public class User {
 
@@ -11,12 +11,14 @@ public class User {
     private String uid;
     private Location place;
     private String photoURL;
+    private String familyId;
 
-    public User(String firstName,String lastName,String email,String password){
-        this.firstName=firstName;
-        this.lastName=lastName;
-        this.email=email;
-        this.password=password;
+    public User(String firstName,String lastName,String email,String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+
     }
 
     public User(String email)
@@ -24,12 +26,13 @@ public class User {
         this.email=email;
     }
 
-    public User(String firstName,String lastName,String email,String password,double latitude,double longitude,String address,String city,String state,String country,String postalCode,String name)
+    public User(String firstName,String lastName,String email,String password,String familyId,double latitude,double longitude,String address,String city,String state,String country,String postalCode,String name)
     {
         this.firstName=firstName;
         this.lastName=lastName;
         this.email=email;
         this.password=password;
+        this.familyId=familyId;
         this.place=new Location(latitude,longitude,address,city,state,country,postalCode,name);
     }
 
@@ -73,6 +76,14 @@ public class User {
         this.uid=val;
     }
 
+    public String getFamilyID(){
+        return this.familyId;
+    }
+    public void setFamilyID(String val)
+    {
+        this.familyId=val;
+    }
+
     public Location getPlace() {return this.place;}
     public void setPlace(Location val){this.place=val;}
 
@@ -83,6 +94,8 @@ public class User {
     {
         this.photoURL=val;
     }
+
+
 
 
 

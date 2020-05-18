@@ -63,8 +63,8 @@ public class FragmentProfile extends Fragment implements View.OnClickListener {
     private StorageReference storage,childStorage;
     private FirebaseUser currentUser;
 
-    private ImageView proPic;
-    private ImageButton geoButton;
+    private ImageView proPic,geoButton;
+    private ImageButton doneButton;
     private TextView textEmail,textFirstName,textLastName,textGeo;
 
     private ArrayList<String> permissionsToRequest;
@@ -98,10 +98,10 @@ public class FragmentProfile extends Fragment implements View.OnClickListener {
                      textLastName.setText(user.getLastName());
                      if (user.getPlace()!=null)
                      {
-                         geoButton.setBackgroundResource(R.drawable.ic_done_black_24dp);
+                         geoButton.setBackgroundResource(R.drawable.ic_thumb_up_black_24dp);
                      }else
                      {
-                         geoButton.setBackgroundResource(R.drawable.ic_cancel_black_24dp);
+                         geoButton.setBackgroundResource(R.drawable.ic_thumb_down_black_24dp);
                      }
 
 
@@ -146,11 +146,6 @@ public class FragmentProfile extends Fragment implements View.OnClickListener {
                          loadDefaultImage();
                      }
                  }
-                 else
-                 {
-                     Log.d("FUORI","AAA");
-                     //no user
-                 }
              }
          });
 
@@ -158,11 +153,14 @@ public class FragmentProfile extends Fragment implements View.OnClickListener {
         proPic = view.findViewById(R.id.propic);
         proPic.setClipToOutline(true);
         geoButton=view.findViewById(R.id.img_location);
+        doneButton=view.findViewById(R.id.button_done);
+        doneButton.setOnClickListener(this);
         textEmail = view.findViewById(R.id.text_email_profile);
         textFirstName=view.findViewById(R.id.text_firstName_profile);
         textGeo=view.findViewById(R.id.text_geo);
         textGeo.setOnClickListener(this);
         textLastName=view.findViewById(R.id.text_lastName_profile);
+
 
 
         proPic.setOnClickListener(new View.OnClickListener() {
@@ -196,15 +194,20 @@ public class FragmentProfile extends Fragment implements View.OnClickListener {
                                 public void onCallback(boolean value) {
                                     if (value) {
                                         Toast.makeText(getContext(), R.string.geoOk, Toast.LENGTH_SHORT).show();
-                                        geoButton.setBackgroundResource(R.drawable.ic_done_black_24dp);
+                                        geoButton.setBackgroundResource(R.drawable.ic_thumb_up_black_24dp);
                                     } else {
                                         Toast.makeText(getContext(), R.string.geoError, Toast.LENGTH_SHORT).show();
-                                        geoButton.setBackgroundResource(R.drawable.ic_cancel_black_24dp);
+                                        geoButton.setBackgroundResource(R.drawable.ic_thumb_down_black_24dp);
                                     }
                                 }
                             });
                     }
                 });
+                break;
+            case R.id.button_done:
+                user.setFirstName(textFirstName.getText().toString());
+                user.setLastName(textLastName.getText().toString());
+                userRepository.updateProfile(user,this);
                 break;
         }
     }

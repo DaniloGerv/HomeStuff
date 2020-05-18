@@ -2,21 +2,34 @@ package com.univpm.homestuff;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.univpm.homestuff.callbacks.RepositoryCallBack;
+import com.univpm.homestuff.entities.User;
+import com.univpm.homestuff.fragments.FragmentFamily;
 import com.univpm.homestuff.fragments.FragmentHome;
 import com.univpm.homestuff.fragments.FragmentProfile;
+import com.univpm.homestuff.repositories.UserRepository;
+import com.univpm.homestuff.utilities.ViewPagerAdapter;
 import com.univpm.homestuff.utilities.Codes;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,22 +37,35 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseFirestore context;
     private boolean userAlreadyOnDb;
 
-    private BottomNavigationView bottomNav;
+
+    private ViewPager viewPage;
+    private TabLayout tabs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        FirebaseAuth.getInstance().signOut();
         setContentView(R.layout.activity_main);
         userAlreadyOnDb=false;
         user = FirebaseAuth.getInstance().getCurrentUser();
+
         context = FirebaseFirestore.getInstance();
+        viewPage=findViewById(R.id.viewpage);
+        tabs=findViewById(R.id.tabs);
+        tabs.setupWithViewPager(viewPage) ;
 
 
+        final ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager(),0);
+
+        viewPagerAdapter.addFragment(new FragmentHome(),"Home");
+        viewPagerAdapter.addFragment(new FragmentFamily(),"Famiglia");
+        viewPagerAdapter.addFragment(new FragmentProfile(),"Profilo");
+        viewPage.setAdapter(viewPagerAdapter);
+        tabs.getTabAt(0).setIcon(R.drawable.ic_home_black_24dp);
+        tabs.getTabAt(1).setIcon(R.drawable.ic_people_outline_black_24dp);
+        tabs.getTabAt(2).setIcon(R.drawable.ic_person_black_24dp);
 
 
-      //  auth.signOut();
         //region User NOT logged
         if(user==null) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -47,48 +73,16 @@ public class MainActivity extends AppCompatActivity {
 
         }
         //endregion
-        else
-         //region User IS logged
-        {
-          navigate();
-        }
+
     }
 
-    private void navigate()
-    {
-        getSupportActionBar().setTitle(R.string.benvenutoTitle);
-        bottomNav=findViewById(R.id.bottom_nav_home);
-        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment selectedFragment=null;
-                switch (item.getItemId())
-                {
-                    case R.id.menu_home:
-                        selectedFragment=new FragmentHome();
-                        break;
-                    case R.id.menu_profilo:
-                        Log.d("PROVA","prova");
 
-                        selectedFragment=new FragmentProfile();
-                        break;
-                }
-
-                if (selectedFragment!=null)  //Change of fragment to view
-                {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
-                }
-                return true;
-            }
-        });
-    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         if(requestCode == Codes.SIGN_REQUEST) {
             if(resultCode == RESULT_OK) {
                 user=FirebaseAuth.getInstance().getCurrentUser();
-                navigate();
             }
         }
     }
