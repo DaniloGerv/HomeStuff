@@ -28,7 +28,6 @@ import com.univpm.homestuff.entities.User;
 import com.univpm.homestuff.repositories.FamilyRepository;
 import com.univpm.homestuff.repositories.UserRepository;
 import com.univpm.homestuff.services.AlertService;
-import com.univpm.homestuff.services.NotificationSender;
 import com.univpm.homestuff.utilities.FamilyMembersAdapter;
 
 import java.util.ArrayList;
