@@ -1,6 +1,5 @@
 package com.univpm.homestuff.entities;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Family {
@@ -61,7 +60,12 @@ public class Family {
 
     public void removeDomestica(Domesticas d)
     {
-        this.toDoList.remove(d);
+        for (Domesticas dom:toDoList)
+        {
+            if (dom.getDomesticaID().equals(d.getDomesticaID())) {
+                toDoList.remove(dom);
+            }
+        }
     }
 
     public void reset()

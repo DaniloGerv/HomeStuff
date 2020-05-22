@@ -4,16 +4,17 @@ import java.util.Date;
 
 public class Domesticas {
     private String name;
-    private String uid;
-    private Date day;
+    private String user;
+    private String familyID;
+    private String domesticaID;
 
-    public Domesticas(String name, String uid, Date day) {
+    public Domesticas(String name, String user) {
         this.name = name;
-        this.uid = uid;
-        this.day = day;
+        this.user = user;
     }
 
     public Domesticas() {
+
     }
 
     public String getName() {  return this.name; }
@@ -21,12 +22,19 @@ public class Domesticas {
         this.name = val;
     }
 
-    public String getUid() { return this.uid; }
-    public void setUid(String val) {
-        this.uid = val;
+    public String getUser() { return this.user; }
+    public void setUser(String val) {
+        this.user = val;
     }
 
-    public Date getDay() {  return this.day; }
-    public void setDay(Date val) { this.day = val; }
+    public String getDomesticaID() {  return this.domesticaID; }
+    public void setDomesticaID(String val) {
+        this.domesticaID = val;
+    }
+
+    public String getFamilyID() {  return this.familyID; }
+    public void setFamilyID(String val) { this.familyID = val; }
+
+
 }
 

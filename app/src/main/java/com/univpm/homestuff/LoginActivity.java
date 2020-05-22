@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -16,16 +15,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.univpm.homestuff.callbacks.RepositoryCallBack;
 import com.univpm.homestuff.callbacks.ResponseCallBack;
 import com.univpm.homestuff.entities.User;
 import com.univpm.homestuff.repositories.UserRepository;
-import com.univpm.homestuff.utilities.Utility;
+import com.univpm.homestuff.services.AlertService;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -37,13 +33,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextView txtEmail;
     private TextView txtPassword;
 
+    private AlertService as;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        as=new AlertService(this);
         userAlreadyOnDb = false;
-        userRepository = new UserRepository();
+        userRepository = new UserRepository(this);
 
         findViewById(R.id.btnRegistrati).setOnClickListener(this);
         findViewById(R.id.btnLogin).setOnClickListener(this);
@@ -83,12 +82,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             }
                             else
                                 {
-                                Toast.makeText(LoginActivity.this,getString(R.string.errorSignIn),Toast.LENGTH_SHORT).show();
+                                    as.errorAlert(R.string.errore,R.string.errorSignIn);
                             }
                         }
                     });
         }catch (Exception ex){
-            Toast.makeText(LoginActivity.this,getString(R.string.errorSignIn),Toast.LENGTH_SHORT).show();
+            as.errorAlert(R.string.errore,R.string.errorSignIn);
             ex.printStackTrace();
         }    }
 
@@ -109,17 +108,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }else if (task.getException().getClass()== FirebaseAuthUserCollisionException.class)
                     {
                         task.getException().printStackTrace();
-                        Toast.makeText(LoginActivity.this,getString(R.string.errorEmailRegister),Toast.LENGTH_SHORT).show();
+                        as.errorAlert(R.string.errore,R.string.errorEmailRegister);
 
                     }else
                     {
                         task.getException().printStackTrace();
-                        Toast.makeText(LoginActivity.this,getString(R.string.errorSignUp),Toast.LENGTH_SHORT).show();
+                        as.errorAlert(R.string.errore,R.string.errorSignUp);
                     }
                 }
             });
         }catch (Exception ex){
-            Toast.makeText(LoginActivity.this,getString(R.string.infoRequiredRegister),Toast.LENGTH_SHORT).show();
+            as.errorAlert(R.string.errore,R.string.infoRequiredRegister);
             ex.printStackTrace();
         }
     }

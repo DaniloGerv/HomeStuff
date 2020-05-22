@@ -41,9 +41,6 @@ public class FirebaseContext {
                             {
                                 List<DocumentSnapshot> value=task.getResult().getDocuments();
                                 myCallBack.onCallback(value);
-                            }else
-                            {
-                                //error handler
                             }
                         }
                     });
@@ -65,9 +62,6 @@ public class FirebaseContext {
                                 {
                                     List<DocumentSnapshot> value=task.getResult().getDocuments();
                                     myCallBack.onCallback(value);
-                                }else
-                                {
-                                    //error handler
                                 }
                             }
                         });
@@ -90,9 +84,6 @@ public class FirebaseContext {
                             {
                                 List<DocumentSnapshot> value=task.getResult().getDocuments();
                                 myCallBack.onCallback(value);
-                            }else
-                            {
-                                //error handler
                             }
                         }
                     });
@@ -124,6 +115,26 @@ public class FirebaseContext {
         }
 
     }
+
+    public void writeData(String collectionName,String documentName,String nameData,Object data,final ResponseCallBack myCallBack)
+    {
+        try {
+            context.collection(collectionName).document(documentName).collection(nameData).add(data).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentReference> task) {
+                    if (task.isSuccessful())
+                        myCallBack.onCallback(true);
+                    else
+                        myCallBack.onCallback(false);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            myCallBack.onCallback(false);
+        }
+
+    }
+
 
     public void writeData(String collectionName,String nameData,Object data,final ResponseCallBack myCallBack)
     {
@@ -173,6 +184,8 @@ public class FirebaseContext {
         }
 
     }
+
+
 
 
 

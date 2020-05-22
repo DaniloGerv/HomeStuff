@@ -17,19 +17,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.univpm.homestuff.callbacks.RepositoryCallBack;
-import com.univpm.homestuff.entities.User;
 import com.univpm.homestuff.fragments.FragmentFamily;
 import com.univpm.homestuff.fragments.FragmentHome;
 import com.univpm.homestuff.fragments.FragmentProfile;
-import com.univpm.homestuff.repositories.UserRepository;
 import com.univpm.homestuff.utilities.ViewPagerAdapter;
 import com.univpm.homestuff.utilities.Codes;
 
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 

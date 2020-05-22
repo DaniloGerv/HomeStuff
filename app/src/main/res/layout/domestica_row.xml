@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/profile_pic_domestica"
+        android:background="@drawable/circle"
+        android:layout_gravity="center_vertical"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <TextView
+        android:textSize="16sp"
+        android:id="@+id/text_domestica_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textColor="@android:color/black"
+        android:layout_gravity="center_vertical"
+        android:text="NOME FACCENDA"/>
+    <TextView
+        android:textSize="14sp"
+        android:textStyle="italic"
+        android:id="@+id/text_member_domestica_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textColor="@android:color/black"
+        android:layout_gravity="center_vertical"
+        android:text="nome componente"/>
+
+    </LinearLayout>
+
+
+        <ImageButton
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="13dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/ic_done_black_24dp"
+            android:background="@android:color/white"
+            android:id="@+id/domestica_done"
+            android:layout_marginEnd="65dp"
+            android:layout_alignParentEnd="true"/>
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="5dp"
+            android:background="@android:color/white"
+            android:id="@+id/domestica_edit"
+            android:src="@drawable/ic_edit_black_24dp"
+            android:layout_marginEnd="10dp"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+</LinearLayout>

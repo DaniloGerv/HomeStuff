@@ -2,7 +2,6 @@ package com.univpm.homestuff.fragments;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,19 +11,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.univpm.homestuff.R;
 import com.univpm.homestuff.callbacks.RepositoryCallBack;
 import com.univpm.homestuff.callbacks.ResponseCallBack;
@@ -32,6 +27,7 @@ import com.univpm.homestuff.entities.Family;
 import com.univpm.homestuff.entities.User;
 import com.univpm.homestuff.repositories.FamilyRepository;
 import com.univpm.homestuff.repositories.UserRepository;
+import com.univpm.homestuff.services.AlertService;
 import com.univpm.homestuff.services.NotificationSender;
 import com.univpm.homestuff.utilities.FamilyMembersAdapter;
 
@@ -54,7 +50,8 @@ public class FragmentFamily extends Fragment implements View.OnClickListener {
     private FamilyRepository familyRepository;
     private UserRepository userRepository;
 
-    private NotificationSender notificationSender;
+
+    private AlertService as;
 
 
     @Override
@@ -66,8 +63,7 @@ public class FragmentFamily extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_family, container, false);
-
-        notificationSender=new NotificationSender();
+        as=new AlertService(getContext());
 
         tabs = (TabLayout) getActivity().findViewById(R.id.tabs);
 
@@ -96,7 +92,7 @@ public class FragmentFamily extends Fragment implements View.OnClickListener {
 
 
         familyRepository=new FamilyRepository();
-        userRepository=new UserRepository();
+        userRepository=new UserRepository(getContext());
 
         return view;
     }
@@ -261,11 +257,8 @@ public class FragmentFamily extends Fragment implements View.OnClickListener {
                                    .show();
                        }else //There aren't users located in the same place without a family
                        {
-                           new MaterialAlertDialogBuilder(getContext())
-                                   .setTitle(R.string.aggiungiMembroFamigliaTitolo)
-                                   .setMessage(R.string.noAggiungiMembroFamiglia)
-                                   .setPositiveButton(R.string.ok,null)
-                                   .show();
+                           as.errorAlert(R.string.aggiungiMembroFamigliaTitolo,R.string.noAggiungiMembroFamiglia);
+
                        }
                    }
                });
@@ -310,7 +303,7 @@ public class FragmentFamily extends Fragment implements View.OnClickListener {
 
                         }else
                         {
-                            //error
+                            as.defaultErrorData();
                         }
                     }
                 });
@@ -329,7 +322,7 @@ public class FragmentFamily extends Fragment implements View.OnClickListener {
                             }
                         }else
                         {
-                            //error
+                            as.defaultErrorData();
                         }
                     }
                 });
@@ -363,13 +356,13 @@ public class FragmentFamily extends Fragment implements View.OnClickListener {
                                     }
                                     else
                                     {
-                                        //error
+                                       as.defaultErrorData();
                                     }
                                 }
                             });
                         }else
                         {
-                            //error
+                            as.defaultErrorData();
                         }
                     }
                 });

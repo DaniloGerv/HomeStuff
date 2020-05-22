@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/family_services_dialog"
+        android:textSize="20dp"
+        android:textColor="@android:color/black"
+        android:paddingBottom="10dp"
+        android:textStyle="bold"
+        android:text="@string/aggiungiServizioFamigliare"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/nomeServizio">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/name_domestica_add"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:hint="@string/nomeUtenteServizio">
+
+        <AutoCompleteTextView
+            android:id="@+id/dropdown_user_domestica"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="@string/cancella"
+        android:id="@+id/cancel_domestica_dialog"/>
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="@string/creaServizio"
+        android:id="@+id/add_domestica_dialog"
+        android:layout_alignParentEnd="true"/>
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>
+
+

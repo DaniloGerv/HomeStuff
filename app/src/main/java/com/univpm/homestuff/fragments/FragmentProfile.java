@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.MediaStore;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,9 +28,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthSettings;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -42,11 +39,11 @@ import com.univpm.homestuff.callbacks.RepositoryCallBack;
 import com.univpm.homestuff.callbacks.ResponseCallBack;
 import com.univpm.homestuff.entities.User;
 import com.univpm.homestuff.repositories.UserRepository;
+import com.univpm.homestuff.services.AlertService;
 import com.univpm.homestuff.services.Geolocation;
 import com.univpm.homestuff.utilities.Codes;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +68,8 @@ public class FragmentProfile extends Fragment implements View.OnClickListener {
     private ArrayList<String> permissionsRejected = new ArrayList<>();
     private ArrayList<String> permissions = new ArrayList<>();
 
+    private AlertService as;
+
 
   @Override
    public void onCreate(Bundle savedInstanceState)
@@ -81,9 +80,9 @@ public class FragmentProfile extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view=inflater.inflate(R.layout.fragment_profile,container,false);
-        userRepository=new UserRepository();
+        userRepository=new UserRepository(getContext());
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
+        as=new AlertService(getContext());
         //Getting user data from data base
         userRepository.getSingleData(currentUser.getUid(), new RepositoryCallBack<User>() {
              @Override
@@ -127,7 +126,8 @@ public class FragmentProfile extends Fragment implements View.OnClickListener {
                                  }).addOnFailureListener(new OnFailureListener() {
                                      @Override
                                      public void onFailure(@NonNull Exception e) {
-                                         Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+
+                                         as.defaultErrorData();
                                      }
                                  });
 
@@ -140,6 +140,7 @@ public class FragmentProfile extends Fragment implements View.OnClickListener {
                              }
 
                          }catch (Exception e) {
+                             as.defaultErrorData();
                          }
                      }
                      else {//loading default profile image
@@ -193,10 +194,10 @@ public class FragmentProfile extends Fragment implements View.OnClickListener {
                                 @Override
                                 public void onCallback(boolean value) {
                                     if (value) {
-                                        Toast.makeText(getContext(), R.string.geoOk, Toast.LENGTH_SHORT).show();
+                                        as.successAlert(R.string.profiloTitolo,R.string.geoOk);
                                         geoButton.setBackgroundResource(R.drawable.ic_thumb_up_black_24dp);
                                     } else {
-                                        Toast.makeText(getContext(), R.string.geoError, Toast.LENGTH_SHORT).show();
+                                        as.errorAlert(R.string.errore,R.string.geoError);
                                         geoButton.setBackgroundResource(R.drawable.ic_thumb_down_black_24dp);
                                     }
                                 }

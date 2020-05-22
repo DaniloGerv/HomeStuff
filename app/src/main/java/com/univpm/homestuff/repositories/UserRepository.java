@@ -1,7 +1,7 @@
 package com.univpm.homestuff.repositories;
 
+import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -16,6 +16,7 @@ import com.univpm.homestuff.callbacks.ResponseCallBack;
 import com.univpm.homestuff.entities.Location;
 import com.univpm.homestuff.entities.User;
 import com.univpm.homestuff.interfaces.IRepository;
+import com.univpm.homestuff.services.AlertService;
 import com.univpm.homestuff.services.FirebaseContext;
 
 import java.util.ArrayList;
@@ -26,9 +27,11 @@ public class UserRepository implements IRepository<User> {
     private ArrayList<User> data ;
     public static User currentUser;
     private String collection="users";
+    private AlertService as;
 
-    public UserRepository()
+    public UserRepository(Context ct)
     {
+        as=new AlertService(ct);
         data=new ArrayList<User>();
     }
 
@@ -112,7 +115,8 @@ public class UserRepository implements IRepository<User> {
             this.addData(u, new ResponseCallBack() {
                 @Override
                 public void onCallback(boolean value) {
-                    if (!value) { //error
+                    if (!value) {
+                        as.defaultErrorData();
                     }
                 }
             });
@@ -139,10 +143,11 @@ public class UserRepository implements IRepository<User> {
         this.addData(u, new ResponseCallBack() {
             @Override
             public void onCallback(boolean value) {
-                if (!value) { //error
+                if (!value) {
+                    as.defaultErrorData();
                 }else
                 {
-                    Toast.makeText(sender.getContext(), R.string.profiloAggiornato, Toast.LENGTH_SHORT).show();
+                    as.successAlert(R.string.profiloTitolo,R.string.profiloAggiornato);
 
                 }
             }
