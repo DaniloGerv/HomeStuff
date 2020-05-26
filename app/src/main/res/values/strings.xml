@@ -5,6 +5,7 @@
     <string name="password">Password</string>
     <string name="nome">Nome</string>
     <string name="cognome">Cognome</string>
+    <string name="esci">Esci dal profilo</string>
     <string name="servizioCompletatoOk">Compito famigliare correttamente completato</string>
     <string name="erroreDati">Si è verificato un errore durante la transizione dei dati</string>
     <string name="noFamiglia">Il profilo non ha una famiglia associata</string>

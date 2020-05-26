@@ -48,6 +48,12 @@ public class MainActivity extends AppCompatActivity {
         tabs.setupWithViewPager(viewPage) ;
 
 
+        //Flag used when the user sign out in order to not allow the user to go back in the previous signed in activities
+        boolean finish = getIntent().getBooleanExtra("finish", false);
+        if (finish) {
+            finish();
+        }
+
         final ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager(),0);
 
         viewPagerAdapter.addFragment(new FragmentHome(),"Home");

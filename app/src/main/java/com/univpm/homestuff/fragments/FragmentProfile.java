@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.univpm.homestuff.MainActivity;
 import com.univpm.homestuff.R;
 import com.univpm.homestuff.callbacks.LocationCallBack;
 import com.univpm.homestuff.callbacks.RepositoryCallBack;
@@ -63,6 +65,8 @@ public class FragmentProfile extends Fragment implements View.OnClickListener {
     private ImageView proPic,geoButton;
     private ImageButton doneButton;
     private TextView textEmail,textFirstName,textLastName,textGeo;
+
+    private Button exit;
 
     private ArrayList<String> permissionsToRequest;
     private ArrayList<String> permissionsRejected = new ArrayList<>();
@@ -154,6 +158,8 @@ public class FragmentProfile extends Fragment implements View.OnClickListener {
         proPic = view.findViewById(R.id.propic);
         proPic.setClipToOutline(true);
         geoButton=view.findViewById(R.id.img_location);
+        exit=view.findViewById(R.id.logout);
+        exit.setOnClickListener(this);
         doneButton=view.findViewById(R.id.button_done);
         doneButton.setOnClickListener(this);
         textEmail = view.findViewById(R.id.text_email_profile);
@@ -210,6 +216,17 @@ public class FragmentProfile extends Fragment implements View.OnClickListener {
                 user.setLastName(textLastName.getText().toString());
                 userRepository.updateProfile(user,this);
                 break;
+            case R.id.logout:
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                intent.putExtra("finish", true); // if you are checking for this in your other Activities
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                        Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+
+
+
         }
     }
 

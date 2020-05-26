@@ -5,5 +5,4 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 public interface ResponseCallBack {
     void onCallback(boolean value);
-
 }
