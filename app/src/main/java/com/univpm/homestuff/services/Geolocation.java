@@ -71,6 +71,7 @@ public class Geolocation extends AppCompatActivity {
                                     requestNewLocationData(sender, myCallBack);
                                 } else {
                                     myCallBack.onCallbackLocation(location);
+
                                 }
                             }
                         });
@@ -107,7 +108,7 @@ public class Geolocation extends AppCompatActivity {
                     myCallBack.onCallbackLocation(location);
                 }
                 else {
-                    Log.d("GEO","r\epeat");
+                    Log.d("GEO","repeat");
                     requestNewLocationData(sender, myCallBack);
                 }
             }
