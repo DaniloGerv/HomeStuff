@@ -17,7 +17,7 @@
     <string name="servizioModificato">Compito famigliare modificato correttamente</string>
     <string name="nomeUtenteServizio">Chi deve svolgere il compito?</string>
     <string name="compilareDialogDomestica">Compilare tutte le informazioni necessarie</string>
-    <string name="aggiungiServizioFamigliare">Aggiungi servizio famigliare</string>
+    <string name="aggiungiServizioFamigliare">Aggiungi compito famigliare</string>
     <string name="creaServizio">Crea</string>
     <string name="modificaServizio">Modifica</string>
     <string name="completaProfilo">Completare il profilo utente per utilizzare questa funzionalità</string>

@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         viewPagerAdapter.addFragment(new FragmentProfile(),"Profilo");
         viewPage.setAdapter(viewPagerAdapter);
         tabs.getTabAt(0).setIcon(R.drawable.ic_home_black_24dp);
-        tabs.getTabAt(1).setIcon(R.drawable.ic_people_outline_black_24dp);
+        tabs.getTabAt(1).setIcon(R.drawable.ic_group_black_24dp);
         tabs.getTabAt(2).setIcon(R.drawable.ic_person_black_24dp);
 
 

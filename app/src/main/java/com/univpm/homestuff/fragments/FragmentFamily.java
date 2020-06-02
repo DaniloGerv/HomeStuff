@@ -2,6 +2,7 @@ package com.univpm.homestuff.fragments;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -268,24 +269,30 @@ public class FragmentFamily extends Fragment implements View.OnClickListener {
                 user.setFamilyID(family.getFID());
                 family.setFamilyName(textFamilyName.getText().toString());
                 family.setPlace(user.getPlace());
+
                 if (family.getMembers()==null)
                 {
                     family.setMembers(new ArrayList<String>());
                     family.addMember(user.getUID());
 
-                }
+                }else if (family.getMembers().size()==0)
+                    family.addMember(user.getUID());
+
+
 
                 familyRepository.addData(family, new ResponseCallBack() {
                     @Override
                     public void onCallback(boolean value) {
                         if (value)
                         {
+                            as.successAlert(R.string.famigliaTitolo,R.string.famigliaAggiunta);
                             Toast.makeText(getContext(),R.string.famigliaAggiunta,Toast.LENGTH_LONG).show();
                             newFamily.setVisibility(View.INVISIBLE);
                             myFamily.setVisibility(View.VISIBLE);
                             textFamilyNameShow.setText(family.getFamilyName());
                             familyName.setText(R.string.famigliaTitolo);
                             for (String uid:family.getMembers()) {
+                                Log.d("FAMILY",uid+"");
                                 userRepository.editFamilyId(uid, family.getFID(), null);
                             }
                             familyMembersAdapter=new FamilyMembersAdapter(new ArrayList<User>());
@@ -314,7 +321,7 @@ public class FragmentFamily extends Fragment implements View.OnClickListener {
                     public void onCallback(boolean value) {
                         if (value)
                         {
-                            Toast.makeText(getContext(),R.string.famigliaModificata,Toast.LENGTH_LONG).show();
+                            as.successAlert(R.string.famigliaTitolo,R.string.famigliaModificata);
                             for (String uid: family.getMembers())
                             {
                                 userRepository.editFamilyId(uid,family.getFID(),null);
@@ -351,6 +358,7 @@ public class FragmentFamily extends Fragment implements View.OnClickListener {
                                         familyMembersAdapter.addItem(user);
                                         recyclerViewMembersFamilyList.setAdapter(familyMembersAdapter);
                                         family.reset();
+                                        family.addMember(user.getUID());
                                         textFamilyName.setText("");
                                     }
                                     else
