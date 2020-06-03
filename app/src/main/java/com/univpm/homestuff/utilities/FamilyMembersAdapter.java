@@ -55,7 +55,7 @@ public class FamilyMembersAdapter extends RecyclerView.Adapter<FamilyMembersAdap
     public void onBindViewHolder(final @NonNull CViewHolder holder, int position) {
         holder.textName.setText(struttura.get(position).getFirstName()+" "+struttura.get(position).getLastName());
         StorageReference childStorage = FirebaseStorage.getInstance().getReference().child("profileImages/"+struttura.get(position).getUID()+".png");
-        if(struttura.get(position).getPhotoURL() != null ) {
+        if(struttura.get(position).getPhotoURL() != null && !struttura.get(position).getPhotoURL().equals("placeholder_profile.png")) {
             try {
                     final File localFile = File.createTempFile(struttura.get(position).getUID(), ".png");
                     childStorage.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {

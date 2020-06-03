@@ -130,7 +130,7 @@ public class DomesticasAdapter extends RecyclerView.Adapter<DomesticasAdapter.CV
                         cache.add(value.get(0));
                         holder.textMemberName.setText(value.get(0).getFirstName()+ " " + value.get(0).getLastName());
                         StorageReference childStorage = FirebaseStorage.getInstance().getReference().child("profileImages/" + value.get(0).getUID() + ".png");
-                        if (value.get(0).getPhotoURL() != null) {
+                        if (value.get(0).getPhotoURL() != null && !value.get(0).getPhotoURL().equals("placeholder_profile.png")) {
                             try {
                                 final File localFile = File.createTempFile(value.get(0).getUID(), ".png");
                                 childStorage.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {

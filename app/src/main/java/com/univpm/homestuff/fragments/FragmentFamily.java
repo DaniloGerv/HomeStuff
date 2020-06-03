@@ -286,7 +286,6 @@ public class FragmentFamily extends Fragment implements View.OnClickListener {
                         if (value)
                         {
                             as.successAlert(R.string.famigliaTitolo,R.string.famigliaAggiunta);
-                            Toast.makeText(getContext(),R.string.famigliaAggiunta,Toast.LENGTH_LONG).show();
                             newFamily.setVisibility(View.INVISIBLE);
                             myFamily.setVisibility(View.VISIBLE);
                             textFamilyNameShow.setText(family.getFamilyName());
@@ -347,8 +346,7 @@ public class FragmentFamily extends Fragment implements View.OnClickListener {
                                 public void onCallback(boolean value) {
                                     if (value)
                                     {
-                                        Toast.makeText(getContext(),R.string.esciFamigliaOk,Toast.LENGTH_LONG).show();
-
+                                        as.successAlert(R.string.famigliaTitolo,R.string.esciFamigliaOk);
                                         //Setting the GUI for creating a new family
                                         user.setFamilyID(null);
                                         myFamily.setVisibility(View.INVISIBLE);

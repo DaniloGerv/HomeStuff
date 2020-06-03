@@ -109,7 +109,7 @@ public class FragmentProfile extends Fragment implements View.OnClickListener {
 
 
                      //loading the profile image
-                     if(user.getPhotoURL() != null ) {
+                     if(user.getPhotoURL() != null && !user.getPhotoURL().equals("placeholder_profile.png")) {
                          try {
                              File proImage = File.createTempFile(user.getUID(), ".png");
                              if (!proImage.exists()) //Image is not into the device, it is needded to download it from the storage

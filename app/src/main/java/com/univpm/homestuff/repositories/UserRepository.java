@@ -90,7 +90,7 @@ public class UserRepository implements IRepository<User> {
     }
 
     public void getDataFromPlace(final Location place, final RepositoryCallBack<User> myCallBack) {
-        dbContext.readDoubleQueriedData(collection ,"place",place,"familyID",null,new DataCallBack() {
+        dbContext.readDoubleQueriedData(collection ,"place.address",place.getAddress(),"familyID",null,new DataCallBack() {
             @Override
             public void onCallback(List<DocumentSnapshot> value) {
                 ArrayList<User> toShare=new ArrayList<User>();
